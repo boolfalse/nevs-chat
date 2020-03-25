@@ -3,12 +3,6 @@ const chatForm = document.getElementById('chat-form');
 const socket = io();
 const chatMessages = document.querySelector('.chat-messages');
 
-function getTime() {
-    const date = new Date();
-    const time = (date.getMonth()+1) + '/' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes();
-    return time;
-}
-
 function scrollArea() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -19,10 +13,9 @@ function refreshInput(event) {
 }
 
 function receiveMessage(message) {
-    const time = getTime();
     const div = document.createElement('div');
     div.classList.add('message');
-    div.innerHTML = `<p class="meta">Mary <span>${time}</span></p> <p class="text">${message}</p>`;
+    div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p> <p class="text">${message.text}</p>`;
     chatMessages.appendChild(div);
 }
 
@@ -34,7 +27,7 @@ socket.on('message', function (message) {
 chatForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const message = e.target.elements.msg.value;
-    socket.emit('chatMessage', message);
+    const text = e.target.elements.msg.value;
+    socket.emit('chatMessage', text);
     refreshInput(e);
 });
