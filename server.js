@@ -10,15 +10,19 @@ const io = SocketIO(server);
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-const port = 3000 || process.env.PORT;
+const port = process.env.PORT || 3000;
 
 io.on('connection', function (socket) {
-    socket.emit('message', "Message for current user.");
-    socket.broadcast.emit('message', "Someone else has connected.");
+    // socket.emit('message', "Message for current user.");
+    // socket.broadcast.emit('message', "Someone else has connected.");
     // io.emit('message', "Message for all users including the current one.");
 
     socket.on('disconnect', function (socket) {
         io.emit('message', "Someone left the chat.");
+    });
+
+    socket.on('chatMessage', function (message) {
+        io.emit('message', message);
     });
 });
 
