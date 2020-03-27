@@ -24,8 +24,15 @@ function leaveUser(userId) {
     }
 }
 
+function getRoomUsers(room) {
+    const roomUsers = users.filter(user => room === user.room);
+
+    return roomUsers;
+}
+
 module.exports = {
     userJoinsRoom,
     getUser,
-    leaveUser
+    leaveUser,
+    getRoomUsers
 };
