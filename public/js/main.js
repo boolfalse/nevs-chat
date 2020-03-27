@@ -3,6 +3,10 @@ const chatForm = document.getElementById('chat-form');
 const socket = io();
 const chatMessages = document.querySelector('.chat-messages');
 
+const { username, room } = Qs.parse(location.search, {
+    ignoreQueryPrefix: true
+});
+
 function scrollArea() {
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
@@ -18,6 +22,8 @@ function receiveMessage(message) {
     div.innerHTML = `<p class="meta">${message.username} <span>${message.time}</span></p> <p class="text">${message.text}</p>`;
     chatMessages.appendChild(div);
 }
+
+socket.emit('joinRoom', { username, room });
 
 socket.on('message', function (message) {
     receiveMessage(message);
